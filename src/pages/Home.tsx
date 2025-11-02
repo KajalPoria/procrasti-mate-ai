@@ -35,11 +35,19 @@ const Home = () => {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
           <Button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/auth")}
             size="lg"
             className="text-xl px-8 py-6 rounded-2xl shadow-[0_8px_30px_-8px_hsl(var(--primary)/0.3)] hover:shadow-[0_8px_40px_-8px_hsl(var(--primary)/0.5)] transition-all hover:scale-105"
           >
             🚀 Start Not Working
+          </Button>
+          <Button
+            onClick={() => navigate("/auth")}
+            variant="secondary"
+            size="lg"
+            className="text-xl px-8 py-6 rounded-2xl border-2 hover:scale-105 transition-all"
+          >
+            🔑 Login
           </Button>
           <Button
             onClick={() => setShowDialog(true)}

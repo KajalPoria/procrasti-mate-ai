@@ -5,6 +5,14 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { MoodCustomizer } from "@/components/MoodCustomizer";
+import { SchedulePlanner } from "@/components/SchedulePlanner";
+import { MusicPlayer } from "@/components/MusicPlayer";
+import { MemeGenerator } from "@/components/MemeGenerator";
+import { SocialFeed } from "@/components/SocialFeed";
+import { Analytics } from "@/components/Analytics";
+import { HallOfFame } from "@/components/HallOfFame";
 
 const EXCUSES = [
   "You can't start now, Mercury is in retrograde 🪐",
@@ -54,8 +62,53 @@ const Dashboard = () => {
   const [currentQuote, setCurrentQuote] = useState("");
   const [focusProgress, setFocusProgress] = useState(0);
   const [isFocusing, setIsFocusing] = useState(false);
+  const [showExtension, setShowExtension] = useState(false);
+  const [easterEgg, setEasterEgg] = useState("");
+  const [user, setUser] = useState<any>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Auth check
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      navigate("/auth");
+    } else {
+      setUser(user);
+    }
+  };
+
+  // Easter egg listener
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      setEasterEgg(prev => (prev + e.key).slice(-5));
+    };
+    window.addEventListener("keypress", handleKeyPress);
+    return () => window.removeEventListener("keypress", handleKeyPress);
+  }, []);
+
+  useEffect(() => {
+    if (easterEgg.toLowerCase().includes("focus")) {
+      toast({
+        title: "🚨 ALERT! Unusual productivity detected!",
+        description: "System overload. Too much ambition detected.",
+        variant: "destructive",
+        duration: 5000,
+      });
+      setTimeout(() => window.location.reload(), 2000);
+    } else if (easterEgg.toLowerCase().includes("work")) {
+      toast({
+        title: "⚠️ FORBIDDEN WORD DETECTED",
+        description: "We don't use that word around here.",
+        variant: "destructive",
+        duration: 4000,
+      });
+    }
+  }, [easterEgg, toast]);
 
   // Random reminder popups
   useEffect(() => {
@@ -81,10 +134,27 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, [toast]);
 
-  const generateExcuse = () => {
+  const generateExcuse = async () => {
     const randomExcuse = EXCUSES[Math.floor(Math.random() * EXCUSES.length)];
     setCurrentExcuse(randomExcuse);
     setShowExcuse(true);
+    
+    // Update stats
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data } = await supabase
+        .from("profiles")
+        .select("excuses_generated")
+        .eq("id", user.id)
+        .single();
+      
+      if (data) {
+        await supabase
+          .from("profiles")
+          .update({ excuses_generated: data.excuses_generated + 1 })
+          .eq("id", user.id);
+      }
+    }
   };
 
   const generateDistraction = () => {
@@ -133,20 +203,32 @@ const Dashboard = () => {
     }, 1000);
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/5 to-primary/10 p-4 md:p-8">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-4 animate-slide-up">
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/")}
-            className="mb-4"
-          >
-            ← Back to Home
-          </Button>
+          <div className="flex justify-between items-center mb-4">
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/")}
+            >
+              ← Back to Home
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-            Let's Pretend to Be Productive Today! 💪
+            Welcome back, {user?.email?.split('@')[0] || 'Procrastinator'}! 💪
           </h1>
           <p className="text-xl text-muted-foreground">Choose your weapon of mass distraction</p>
         </div>
@@ -165,8 +247,14 @@ const Dashboard = () => {
           </div>
         </Card>
 
+        {/* Mood Customizer */}
+        <MoodCustomizer />
+
+        {/* Music Player */}
+        <MusicPlayer />
+
         {/* Main Chaos Buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card 
             className="p-8 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 hover:border-primary/50 transition-all hover:scale-105 cursor-pointer animate-bounce-in"
             onClick={generateExcuse}
@@ -219,6 +307,29 @@ const Dashboard = () => {
               <p className="text-muted-foreground">Demotivational quotes to keep you grounded</p>
             </div>
           </Card>
+
+          <SchedulePlanner />
+          <MemeGenerator />
+          
+          <Card 
+            className="p-8 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 hover:border-primary/50 transition-all hover:scale-105 cursor-pointer animate-bounce-in"
+            onClick={() => setShowExtension(true)}
+          >
+            <div className="text-center space-y-4">
+              <div className="text-5xl">🧩</div>
+              <h3 className="text-2xl font-bold text-primary">Install Extension</h3>
+              <p className="text-muted-foreground">Browser extension for maximum slacking</p>
+            </div>
+          </Card>
+        </div>
+
+        {/* Social Features */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SocialFeed />
+          <div className="space-y-6">
+            <Analytics />
+            <HallOfFame />
+          </div>
         </div>
 
         {/* Emergency Button */}
@@ -301,6 +412,20 @@ const Dashboard = () => {
                   Inspirational? Questionable. Relatable? Absolutely.
                 </p>
               </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+
+      {/* Extension Dialog */}
+      <Dialog open={showExtension} onOpenChange={setShowExtension}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-2xl">🧩 Extension Installed!</DialogTitle>
+            <DialogDescription className="text-center pt-4">
+              <p className="text-lg">Extension installed successfully!</p>
+              <p className="text-lg font-bold mt-2">(It does nothing.)</p>
+              <div className="text-6xl my-4">🎉</div>
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
