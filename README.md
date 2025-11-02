@@ -1,73 +1,76 @@
-# Welcome to your Lovable project
+# 🚫 ProcrastiMate – The AI That Helps You *Not* Do Things
 
-## Project info
+> Because productivity is overrated.
 
-**URL**: https://lovable.dev/projects/38d0076e-2f4d-4b9e-8577-43f530b50b05
+ProcrastiMate is your personal **AI procrastination assistant** — designed to help you *avoid* being productive, *delay* your goals in style, and *celebrate* your lack of motivation.  
+Built for the **Queen’s Stupid Hackathon 2025**, this app proudly takes uselessness to a new level — while still being fully functional and (ironically) well-built.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 💡 Inspiration
+While everyone builds AI tools to *increase* productivity, we decided to build one that proudly does the opposite.  
+ProcrastiMate was born from the universal struggle of “I’ll start after one more meme.”  
+We thought — why fight procrastination when you can **embrace it intelligently**?
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/38d0076e-2f4d-4b9e-8577-43f530b50b05) and start prompting.
+## 🤖 What It Does
+ProcrastiMate helps you:
+- Generate **creative excuses** for not doing tasks.
+- Activate **Fake Focus Mode** to *pretend* you’re working.
+- Receive **AI-generated distractions** (memes, jokes, useless facts).
+- Get **demotivational quotes** when you’re feeling *too motivated*.
+- Compete with friends in the **Procrastination Leaderboard**.
+- Hit the **Emergency Button** to instantly avoid productivity.
+- Chat with an **AI mentor** that gives *bad advice only*.
+- Track your *Fake Productivity Score* proudly.
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## 🏗️ How We Built It
+- **Frontend:** React + Tailwind CSS  
+- **Backend:** Node.js + Express  
+- **Database:** MongoDB (for user data, excuses, and fake stats)  
+- **AI Features:** OpenAI API for generating excuses, quotes, and “useless facts”  
+- **Authentication:** Firebase Login  
+- **Hosting:** Vercel (Frontend) + Render (Backend)  
+- **Version Control:** GitHub  
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🧩 Features & Functionality
 
-Follow these steps:
+| Feature | Description |
+|----------|-------------|
+| 💤 Login Page | Sign up to officially start procrastinating. |
+| 🎯 Dashboard | Displays your daily “achievements” in not doing things. |
+| 🤷 Generate Excuse | AI creates custom, logic-defying excuses for your delays. |
+| 🐱 Distract Me | Opens a curated random meme or fact feed. |
+| 🎭 Fake Focus Mode | Simulates a productivity app loading screen. |
+| 📈 Productivity Tracker | Always shows 100% (because you *tried*). |
+| 🧘 Motivate Me | Provides demotivational quotes like “Be the reason your alarm clock fears you.” |
+| 🧠 Chatbot | AI chat that encourages the *wrong* things in the right way. |
+| 🚨 Emergency Button | Opens YouTube or meme tabs instantly when danger of productivity arises. |
+| 🏆 Leaderboard | Ranks users by their creativity in avoiding work. |
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## ⚙️ How to Run Locally
 
-# Step 3: Install the necessary dependencies.
-npm i
+```bash
+# Clone this repository
+git clone https://github.com/yourusername/procrastimate.git
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Navigate to project folder
+cd procrastimate
+
+# Install dependencies
+npm install
+
+# Start the backend
+cd server
+npm start
+
+# Start the frontend
+cd ../client
 npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/38d0076e-2f4d-4b9e-8577-43f530b50b05) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
